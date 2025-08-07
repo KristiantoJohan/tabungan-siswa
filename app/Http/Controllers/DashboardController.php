@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Balance;
 use App\Models\Students;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function showAdminDashboard() {
-        return view('admin.dashboard');
+        $balance = Balance::first();
+        return view('admin.dashboard', compact('balance'));
     }
 
     public function showStudentDashboard() {

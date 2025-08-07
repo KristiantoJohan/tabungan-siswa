@@ -13,7 +13,7 @@ class AdminSiswaSectionController extends Controller
 {
     public function showAdminSiswaSection() {
         $classes = Classes::all();
-        $students = Students::with('class')->get();
+        $students = Students::with(['class', 'user'])->get();
 
         return view('admin.siswa', compact('classes', 'students'));
     }
@@ -23,6 +23,7 @@ class AdminSiswaSectionController extends Controller
             'username' => 'required|unique:users,username',
             'password' => 'required|min:6',
             'name'     => 'required|string|max:255',
+            'rfid'     => 'required|string',
             'address'  => 'required|string',
             'class_id' => 'required|uuid|exists:classes,id',
             'telephone'=> 'required|string',
@@ -42,6 +43,7 @@ class AdminSiswaSectionController extends Controller
             Students::create([
                 'user_id'   => $user->id,
                 'name'      => $request->name,
+                'rfid'      => $request->rfid,
                 'address'   => $request->address,
                 'class_id'  => $request->class_id,
                 'telephone' => $request->telephone,
@@ -67,7 +69,7 @@ class AdminSiswaSectionController extends Controller
     public function update(Request $request, $id)
     {
         $student = Students::findOrFail($id);
-        $student->update($request->only(['name', 'address', 'class_id', 'telephone']));
+        $student->update($request->only(['name', 'rfid', 'address', 'class_id', 'telephone']));
         
         return redirect()->back()->with('success', 'Data siswa berhasil diperbarui.');
     }

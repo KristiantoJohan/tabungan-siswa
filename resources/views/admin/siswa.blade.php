@@ -170,7 +170,9 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
+                                                <th>Username</th>
                                                 <th>Name</th>
+                                                <th>RFID</th> 
                                                 <th>Address</th>
                                                 <th>Class</th>
                                                 <th>Telephone</th>
@@ -182,18 +184,20 @@
                                             @foreach ($students as $student)
                                                 <tr>
                                                     <td>{{ $student->id }}</td>
+                                                    <td>{{ $student->user->username }}</td>
                                                     <td>{{ $student->name }}</td>
+                                                    <td>{{ $student->rfid }}</td>
                                                     <td>{{ $student->address }}</td>
                                                     <td>{{ $student->class->name ?? '-' }}</td>
                                                     <td>{{ $student->telephone }}</td>
                                                     <td>
                                                         <!-- Tombol Edit -->
-                                                        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editSiswaModal-{{ $student->id }}">
+                                                        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editSiswaModal-{{ $student->id }}" style="padding: 0.15rem 0.3rem; font-size: 0.75rem;">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
 
                                                         <!-- Tombol Delete -->
-                                                        <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteSiswaModal-{{ $student->id }}">
+                                                        <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteSiswaModal-{{ $student->id }}" style="padding: 0.15rem 0.3rem; font-size: 0.75rem;">
                                                             <i class="fas fa-trash-alt"></i>
                                                         </button>
                                                     </td>
@@ -212,17 +216,22 @@
                                                                 @method('PATCH')
                                                                 <div class="modal-body">
                                                                     <div class="form-group">
-                                                                        <label>Nama Lengkap</label>
+                                                                        <label>Name</label>
                                                                         <input type="text" class="form-control" name="name" value="{{ $student->name }}" required>
                                                                     </div>
 
                                                                     <div class="form-group">
-                                                                        <label>Alamat</label>
+                                                                        <label>RFID</label>
+                                                                        <input type="text" class="form-control" name="name" value="{{ $student->rfid }}" required>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label>Address</label>
                                                                         <textarea class="form-control" name="address" rows="2" required>{{ $student->address }}</textarea>
                                                                     </div>
 
                                                                     <div class="form-group">
-                                                                        <label>Kelas</label>
+                                                                        <label>Class</label>
                                                                         <select class="form-control" name="class_id" required>
                                                                             @foreach ($classes as $class)
                                                                                 <option value="{{ $class->id }}" {{ $class->id == $student->class_id ? 'selected' : '' }}>
@@ -233,14 +242,14 @@
                                                                     </div>
 
                                                                     <div class="form-group">
-                                                                        <label>No. Telepon</label>
+                                                                        <label>Telephone</label>
                                                                         <input type="text" class="form-control" name="telephone" value="{{ $student->telephone }}" required>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="modal-footer">
-                                                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                                                                    <button type="submit" class="btn btn-success">Perbarui</button>
+                                                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Abort</button>
+                                                                    <button type="submit" class="btn btn-success">Update</button>
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -252,18 +261,18 @@
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title">Konfirmasi Hapus</h5>
+                                                                <h5 class="modal-title">Delete Confirmation</h5>
                                                                 <button class="close" type="button" data-dismiss="modal"><span>×</span></button>
                                                             </div>
                                                             <form method="POST" action="{{ route('admin.siswa.destroy', $student->user_id) }}">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <div class="modal-body">
-                                                                    <p>Apakah kamu yakin ingin menghapus siswa <strong>{{ $student->name }}</strong>?</p>
+                                                                    <p>Are you suer to delete <strong>{{ $student->name }}</strong>?</p>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                                                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Abort</button>
+                                                                    <button type="submit" class="btn btn-danger">Delete</button>
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -307,7 +316,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Tambah Siswa</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Student</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -326,19 +335,24 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="name">Nama Lengkap</label>
+                            <label for="name">Name</label>
                             <input type="text" class="form-control" name="name" id="name" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="address">Alamat</label>
+                            <label for="name">RFID</label>
+                            <input type="text" class="form-control" name="rfid" id="rfid" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Address</label>
                             <textarea class="form-control" name="address" id="address" rows="2" required></textarea>
                         </div>
 
                         <div class="form-group">
-                            <label for="class_id">Kelas</label>
+                            <label for="class_id">Class</label>
                             <select class="form-control" name="class_id" id="class_id" required>
-                                <option value="">-- Pilih Kelas --</option>
+                                <option value="">-- Choose Class --</option>
                                 @foreach ($classes as $class)
                                     <option value="{{ $class->id }}">{{ $class->name }}</option>
                                 @endforeach
@@ -346,14 +360,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="telephone">No. Telepon</label>
+                            <label for="telephone">Telephone</label>
                             <input type="text" class="form-control" name="telephone" id="telephone" required>
                         </div>
                     </div>
 
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Abort</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </form>
             </div>
