@@ -155,6 +155,7 @@
                                                 <th>Nama</th>
                                                 <th>Kelas</th>
                                                 <th>Tanggal</th>
+                                                <th>Jam</th>
                                                 <th>Setoran</th>
                                                 <th>Penarikan</th>
                                                 <th>Saldo</th>
@@ -167,6 +168,7 @@
                                                 <td>{{ $saving->user->student->name ?? '-' }}</td>
                                                 <td>{{ $saving->user->student->class->name ?? '-' }}</td>
                                                 <td>{{ $saving->tanggal }}</td>
+                                                <td>{{ $saving->jam }}</td>
                                                 <td>{{ number_format($saving->setoran, 0, ',', '.') }}</td>
                                                 <td>{{ number_format($saving->penarikan, 0, ',', '.') }}</td>
                                                 <td>{{ number_format($saving->saldo, 0, ',', '.') }}</td>

@@ -17,6 +17,7 @@ class Savings extends Model
      */
     protected $fillable = [
         'tanggal',
+        'jam',
         'setoran',
         'penarikan',
         'user_id',
